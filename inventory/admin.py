@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Supplier, Product, Purchase, Customer, Sale, SaleItem, StockAdjustment
+from django.db.models import F, Sum, ExpressionWrapper, DecimalField
+from .models import Supplier, Product, Purchase, Customer, Sale, SaleItem, StockAdjustment, Share
 
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('product_name', 'description', 'barcode', 'category', 'purchase_price', 'selling_price', 'quantity_in_stock', 'min_stock_level', 'supplier', 'created_at')
@@ -42,7 +43,24 @@ class StockAdjustmentAdmin(admin.ModelAdmin):
     search_fields = ('product__product_name', 'reason')
     list_per_page = 20
     
+class ShareAdmin(admin.ModelAdmin):
+    list_display = ('partner_name', 'percentage', 'provision', 'created_at')
+    search_fields = ('partner_name',)
+    list_per_page = 20
 
+    def provision(self, obj):
+        # Calculate total profit from all SaleItems
+        profit_qs = SaleItem.objects.annotate(
+            profit_per_item=ExpressionWrapper(
+                (F('unit_price') - F('product__purchase_price')) * F('quantity'),
+                output_field=DecimalField()
+            )
+        ).aggregate(total_profit=Sum('profit_per_item'))
+
+        total_profit = profit_qs['total_profit'] or 0
+        return round((obj.percentage / 100) * total_profit, 2)
+
+    provision.short_description = 'Provision (Estimate)'
 
 admin.site.register(Supplier, SupplierAdmin)
 admin.site.register(Product, ProductAdmin)
@@ -51,6 +69,7 @@ admin.site.register(Customer, CustomerAdmin)
 admin.site.register(Sale, SaleAdmin)
 admin.site.register(SaleItem, SaleItemAdmin)
 admin.site.register(StockAdjustment, StockAdjustmentAdmin)
+admin.site.register(Share, ShareAdmin)
 
 admin.site.site_title = "Inventory"
 admin.site.site_header = "Inventory"
