@@ -64,3 +64,11 @@ class StockAdjustment(models.Model):
     quantity = models.IntegerField()
     reason = models.TextField()
     adjusted_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+
+class Share(models.Model):
+    partner_name = models.CharField(max_length=100)
+    percentage = models.DecimalField(max_digits=5, decimal_places=2)  # e.g., 33.33
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.partner_name} - {self.percentage}%"
