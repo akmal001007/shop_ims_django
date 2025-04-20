@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Monthly Report</title>
+    <style>
+        body { font-family: Arial; margin: 20px; }
+        table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+        th, td { border: 1px solid #ccc; padding: 10px; text-align: center; }
+        th { background-color: #f4f4f4; }
+
+        .btn-dashboard {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        .btn-dashboard:hover {
+            background-color: #0056b3;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Monthly Report - {{ month }}/{{ year }}</h1>
+    <a href="{% url 'admin:index' %}" class="btn-dashboard" style="width: 13%;">Back to Dashboard</a>
+    <a href="{% url 'daily_report' %}" class="btn-dashboard" style="width: 13%;">Daily Report</a>
+
+    <form method="get" style="margin: 20px 0;">
+        <label>Month: <input type="number" name="month" value="{{ month }}" min="1" max="12"></label>
+        <label>Year: <input type="number" name="year" value="{{ year }}"></label>
+        <button type="submit">Filter</button>
+    </form>
+
+    <table>
+        <tr>
+            <th>Total Purchases</th>
+            <th>Total Sales Price</th>
+            <th>Total Sales Count</th>
+            <th>Remaining Stock</th>
+            <th>Profit</th>
+        </tr>
+        <tr>
+            <td>${{ total_purchases|floatformat:2 }}</td>
+            <td>${{ total_sales_price|floatformat:2 }}</td>
+            <td>{{ total_sales_count }}</td>
+            <td>{{ remaining_stock }}</td>
+            <td>${{ profit|floatformat:2 }}</td>
+        </tr>
+    </table>
+
+    <h2>Share Profits</h2>
+    <table>
+        <tr>
+            <th>Partner</th>
+            <th>Percentage</th>
+            <th>Profit</th>
+        </tr>
+        {% for share in share_profits %}
+        <tr>
+            <td>{{ share.partner_name }}</td>
+            <td>{{ share.percentage }}%</td>
+            <td>${{ share.profit }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

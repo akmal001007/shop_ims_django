@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Daily Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f9f9f9;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 40px;
+        }
+
+        .summary, .stock, .partners {
+            margin-bottom: 40px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 0 10px #ccc;
+        }
+
+        th, td {
+            padding: 12px 16px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        .btn-dashboard {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        .btn-dashboard:hover {
+            background-color: #0056b3;
+        }
+
+        .card {
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 8px #ccc;
+            border-radius: 8px;
+        }
+
+        .card p {
+            font-size: 18px;
+        }
+
+        .card strong {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <div style="margin-bottom: 20px; display: flex; flex-direction: column;">
+        <a href="{% url 'monthly_report' %}" class="btn-dashboard" style="width: 13%;">📅 Monthly Report</a>
+        <a href="/admin/" class="btn-dashboard" style="width: 13%;">← Back to Dashboard</a>
+    </div>
+    <h1>📊 Daily Report</h1>
+
+    <div class="summary card">
+        <p><strong>Total Purchases:</strong> {{ total_purchase_amount }}</p>
+        <p><strong>Total Sale Items:</strong> {{ total_sales_amount }}</p>
+        <p><strong>Total Profit:</strong> {{ profit }}</p>
+    </div>
+
+    <div class="partners">
+        <h2>💼 Partner Profits</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Partner</th>
+                    <th>Share %</th>
+                    <th>Profit</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for share in partner_profits %}
+                <tr>
+                    <td>{{ share.partner }}</td>
+                    <td>{{ share.percentage }}%</td>
+                    <td>${{ share.profit|floatformat:2 }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="stock">
+        <h2>📦 Remaining Stock</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Purchased</th>
+                    <th>Sold</th>
+                    <th>Remaining</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for stock in remaining_stock %}
+                <tr>
+                    <td>{{ stock.product_name }}</td>
+                    <td>{{ stock.purchased }}</td>
+                    <td>{{ stock.sold }}</td>
+                    <td>{{ stock.remaining }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>
