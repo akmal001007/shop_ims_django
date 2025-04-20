@@ -1,0 +1,10 @@
+{% extends "admin/base_site.html" %}
+
+{% block branding %}
+<h1 id="site-name"><a href="{% url 'admin:index' %}">Inventory Admin</a></h1>
+{% endblock %}
+
+{% block nav-global %}
+    {{ block.super }}
+    <li><a href="{% url 'daily_report' %}" target="_blank">📊 Daily Report</a></li>
+{% endblock %}
