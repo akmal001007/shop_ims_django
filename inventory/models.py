@@ -4,9 +4,9 @@ from django.contrib.auth.models import User
 class Supplier(models.Model):
     supplier_name = models.CharField(max_length=100)
     contact_person = models.CharField(max_length=100)
-    phone = models.CharField(max_length=20)
-    email = models.EmailField()
-    address = models.TextField()
+    phone = models.CharField(max_length=20, blank=True)
+    email = models.EmailField(blank=True)
+    address = models.TextField(blank=True)
 
     def __str__(self):
         return self.supplier_name
@@ -14,8 +14,8 @@ class Supplier(models.Model):
 class Product(models.Model):
     product_name = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
-    barcode = models.CharField(max_length=50, unique=True)
-    category = models.CharField(max_length=50)
+    barcode = models.CharField(max_length=50,blank=True,)
+    category = models.CharField(max_length=50, blank=True)
     purchase_price = models.DecimalField(max_digits=10, decimal_places=2)
     selling_price = models.DecimalField(max_digits=10, decimal_places=2)
     quantity_in_stock = models.IntegerField()
@@ -37,7 +37,7 @@ class Purchase(models.Model):
 
 class Customer(models.Model):
     customer_name = models.CharField(max_length=100)
-    phone = models.CharField(max_length=20)
+    phone = models.CharField(max_length=20, blank=True)
 
     def __str__(self):
         return self.customer_name
@@ -52,6 +52,8 @@ class Sale(models.Model):
         ('mobile', 'Mobile Money'),
     )
     payment_method = models.CharField(max_length=10, choices=PAYMENT_CHOICES)
+    def __str__(self):
+        return f"Sale #{self.id} - {self.customer.customer_name if self.customer else 'No Customer'} on {self.sale_date.strftime('%Y-%m-%d')}"
 
 class SaleItem(models.Model):
     sale = models.ForeignKey(Sale, on_delete=models.CASCADE)
