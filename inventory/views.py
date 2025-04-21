@@ -8,6 +8,11 @@ from datetime import date
 from datetime import datetime
 from django.utils.timezone import now
 from .models import Purchase, Sale, SaleItem, Product, Share
+from django.utils.translation import gettext as _
+
+
+def my_view(request):
+    messages.success(request, _("Product added successfully"))
 
 def product_list(request):
     if request.method == 'GET':
@@ -48,10 +53,9 @@ def daily_report(request):
 
     for item in sale_items:
         product = item.product
-        purchase_price = product.purchase_price  # Assuming this is the average or last purchase price
+        purchase_price = product.purchase_price 
         sell_price = item.unit_price
         quantity = item.quantity
-
         item_profit = (sell_price - purchase_price) * quantity
         total_profit += item_profit
 

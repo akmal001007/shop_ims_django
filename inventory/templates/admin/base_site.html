@@ -1,10 +1,21 @@
 {% extends "admin/base_site.html" %}
+{% load i18n %}
 
 {% block branding %}
-<h1 id="site-name"><a href="{% url 'admin:index' %}">Inventory Admin</a></h1>
+  <h1 id="site-name"><a href="{% url 'admin:index' %}">Inventory</a></h1>
 {% endblock %}
 
 {% block nav-global %}
-    {{ block.super }}
-    <li><a href="{% url 'daily_report' %}" target="_blank">📊 Daily Report</a></li>
+  {{ block.super }}
+  
+  <li><a href="{% url 'daily_report' %}" target="_blank">📊 Daily Report</a></li>
+
+  <li style="float: right; margin-right: 20px;">
+    <form action="{% url 'set_language' %}" method="post" style="display: inline;">{% csrf_token %}
+      <select name="language" onchange="this.form.submit()" style="padding: 3px; font-size: 13px; border: none;">
+        <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>English</option>
+        <option value="fa" {% if LANGUAGE_CODE == 'fa' %}selected{% endif %}>Dari</option>
+      </select>
+    </form>
+  </li>
 {% endblock %}
