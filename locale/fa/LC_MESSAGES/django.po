@@ -1,0 +1,173 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-04-25 23:03+0430\n"
+"PO-Revision-Date: 2025-04-25 10:00+0430\n"
+"Last-Translator: Akmal Khan <your-email@example.com>\n"
+"Language-Team: Dari <LL@li.org>\n"
+"Language: fa\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+
+# Supplier
+msgid "Supplier Name"
+msgstr "نام عرضه‌کننده"
+
+msgid "Contact Person"
+msgstr "شخص تماس"
+
+msgid "Phone"
+msgstr "شماره تماس"
+
+msgid "Email"
+msgstr "ایمیل"
+
+msgid "Address"
+msgstr "آدرس"
+
+msgid "Supplier"
+msgstr "عرضه‌کننده"
+
+msgid "Suppliers"
+msgstr "عرضه‌کنندگان"
+
+# Product
+msgid "Product Name"
+msgstr "نام محصول"
+
+msgid "Description"
+msgstr "توضیحات"
+
+msgid "Barcode"
+msgstr "بارکد"
+
+msgid "Category"
+msgstr "کتگوری"
+
+msgid "Purchase Price"
+msgstr "قیمت خرید"
+
+msgid "Selling Price"
+msgstr "قیمت فروش"
+
+msgid "Quantity in Stock"
+msgstr "تعداد در موجودی"
+
+msgid "Minimum Stock Level"
+msgstr "حداقل موجودی"
+
+msgid "Created At"
+msgstr "تاریخ ایجاد"
+
+msgid "Product"
+msgstr "محصول"
+
+msgid "Products"
+msgstr "محصولات"
+
+# Purchase
+msgid "Quantity"
+msgstr "تعداد"
+
+msgid "Unit Price"
+msgstr "قیمت فی واحد"
+
+msgid "Total Cost"
+msgstr "قیمت مجموعی"
+
+msgid "Purchase Date"
+msgstr "تاریخ خرید"
+
+msgid "Received By"
+msgstr "دریافت‌شده توسط"
+
+msgid "Purchase"
+msgstr "خرید"
+
+msgid "Purchases"
+msgstr "خریدها"
+
+# Customer
+msgid "Customer Name"
+msgstr "نام مشتری"
+
+msgid "Customer"
+msgstr "مشتری"
+
+msgid "Customers"
+msgstr "مشتریان"
+
+# Sale
+msgid "Sale Date"
+msgstr "تاریخ فروش"
+
+msgid "Total Amount"
+msgstr "مجموع مبلغ"
+
+msgid "Payment Method"
+msgstr "روش پرداخت"
+
+msgid "Cash"
+msgstr "نقدی"
+
+msgid "Card"
+msgstr "کارت"
+
+msgid "Mobile Money"
+msgstr "پول موبایل"
+
+msgid "Sale"
+msgstr "فروش"
+
+msgid "Sales"
+msgstr "فروش‌ها"
+
+# Sale Item
+msgid "Sale item"
+msgstr "فروش یک قلم"
+
+
+msgid "Sale items"
+msgstr "فروش اقلام"
+
+# Stock Adjustment
+
+msgid "Stock adjustments"
+msgstr "تنظیمات سهام"
+
+msgid "Reason"
+msgstr "دلیل"
+
+msgid "Adjusted By"
+msgstr "تنظیم‌شده توسط"
+
+msgid "Stock Adjustment"
+msgstr "تنظیم موجودی"
+
+msgid "Stock Adjustments"
+msgstr "تنظیمات موجودی"
+
+# Share
+msgid "Partner Name"
+msgstr "نام شریک"
+
+msgid "Percentage"
+msgstr "درصد"
+
+msgid "Provision"
+msgstr "سهم تخمینی"
+
+msgid "Share"
+msgstr "سهم"
+
+msgid "Shares"
+msgstr "سهام"
