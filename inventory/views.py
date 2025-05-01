@@ -173,7 +173,7 @@ def monthly_report_list(request):
         'total_sales': total_sales,
         'total_purchases': total_purchases,
         'purchase_details': purchase_details,
-        'products': []  # Add the products context if you need to display remaining stock
+        'products': [] 
     }
 
     return render(request, 'inventory/permanent_report_list.html', context)
