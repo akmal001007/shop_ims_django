@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+  <h1>{% trans "Permanent Reports" %}</h1>
+
+  <!-- Daily Report Section -->
+  <div style="background:#f9f9f9; padding: 20px; margin-bottom: 20px; border: 1px solid #ccc;">
+    <h2>📅 {% trans "Daily Report" %} ({{ today|default:None }})</h2>
+    <p><strong>{% trans "Total Sales" %}:</strong> {{ total_sales }}</p>
+    <p><strong>{% trans "Total Purchases" %}:</strong> {{ total_purchases }}</p>
+
+    <h3>{% trans "Remaining Stock" %}</h3>
+    <ul>
+      {% for product in products %}
+        <li>{{ product.name }}: {{ product.quantity_in_stock }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <!-- Permanent Report List -->
+  {% if reports %}
+    <h3>{% trans "All Permanent Reports" %}</h3>
+    <ul>
+      {% for report in reports %}
+        <li>{{ report.title }} - {{ report.created_at }}</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>{% trans "No permanent reports found." %}</p>
+  {% endif %}
+
+  <!-- Download PDF Button -->
+  <a href="{% url 'download_permanent_report_pdf' %}" class="btn btn-primary">
+    {% trans "Download PDF" %}
+  </a>
+{% endblock %}

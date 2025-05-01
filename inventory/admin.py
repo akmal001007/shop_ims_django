@@ -1,7 +1,10 @@
 from django.contrib import admin
 from django.db.models import F, Sum, ExpressionWrapper, DecimalField
-from .models import Supplier, Product, Purchase, Customer, Sale, SaleItem, StockAdjustment, Share
+from .models import Supplier, Product, Purchase, Customer, Sale, SaleItem, StockAdjustment, Share, TotalProfit
 from django.utils.translation import gettext_lazy as _
+from datetime import date, timedelta
+from django.utils.html import format_html
+
 
 class ProductAdmin(admin.ModelAdmin):
     list_display = (
@@ -24,12 +27,52 @@ class SupplierAdmin(admin.ModelAdmin):
     verbose_name_plural = _("Suppliers")
 
 class PurchaseAdmin(admin.ModelAdmin):
-    list_display = ('supplier', 'product', 'quantity', 'unit_price', 'total_cost', 'purchase_date', 'received_by')
-    list_filter = ('purchase_date', 'supplier')
+    list_display = (
+        'supplier', 
+        'product', 
+        'box_quantity', 
+        'total_packages_display',
+        'total_items_display',
+        'cost_per_item',
+        'display_total_cost', 
+        'purchase_date', 
+        'expire_date', 
+        'highlight_expire_date',
+        'received_by'
+    )
+    list_filter = ('purchase_date', 'supplier', 'expire_date')
     search_fields = ('product__product_name',)
     list_per_page = 10
-    verbose_name = _("Purchase")
-    verbose_name_plural = _("Purchases")
+
+    def highlight_expire_date(self, obj):
+        if obj.expire_date and obj.expire_date <= date.today() + timedelta(days=30):
+            return format_html('<span style="color: red; font-weight: bold;">{}</span>', obj.expire_date)
+        return obj.expire_date
+    highlight_expire_date.short_description = _("Expire Date")
+
+    def display_total_cost(self, obj):
+        return "{:.2f}".format(obj.total_cost_value or 0)
+    display_total_cost.short_description = _("Total Cost")
+
+    def total_packages_display(self, obj):
+        return obj.total_packages
+    total_packages_display.short_description = _("Total Packages")
+
+    def total_items_display(self, obj):
+        return obj.total_items
+    total_items_display.short_description = _("Total Items")
+
+    class Media:
+        js = ('admin/js/purchase_auto_calculate.js',)  # Ensure the JS file is loaded
+
+    def get_form(self, request, obj=None, **kwargs):
+        form = super().get_form(request, obj, **kwargs)
+        if obj:  # if editing existing purchase (obj is not None)
+            self.Media.js = ()  # Disable JS for editing (no auto-calculation needed)
+        else:
+            self.Media.js = ('admin/js/purchase_auto_calculate.js',)  # Enable JS for adding new purchase
+        return form
+
 
 class CustomerAdmin(admin.ModelAdmin):
     list_display = ('customer_name', 'phone')
@@ -47,42 +90,60 @@ class SaleAdmin(admin.ModelAdmin):
     verbose_name_plural = _("Sales")
 
 class SaleItemAdmin(admin.ModelAdmin):
-    list_display = ('sale', 'product', 'quantity', 'unit_price')
+    list_display = (
+        'sale', 
+        'product', 
+        'box_quantity', 
+        'packages_per_box', 
+        'items_per_package', 
+        'total_cost_value'  # Use total_cost instead of total_cost_value
+    )
     list_filter = ('sale',)
     search_fields = ('product__product_name',)
     list_per_page = 10
-    verbose_name = _("Sale Item")
-    verbose_name_plural = _("Sale Item")
+
+    # Optionally, display total cost value
+    def total_cost(self, obj):
+        # Assuming `obj.total_cost` calculates the cost for the sale item.
+        return "{:.2f}".format(obj.total_cost or 0)
+    total_cost.short_description = _("Total Cost")
+
+    class Media:
+        js = ('admin/js/saleitem_auto_calculate.js',)
 
 class StockAdjustmentAdmin(admin.ModelAdmin):
     list_display = ('product', 'quantity', 'reason', 'adjusted_by')
     list_filter = ('product',)
     search_fields = ('product__product_name', 'reason')
     list_per_page = 10
-    verbose_name = _("Stock Adjustment")
-    verbose_name_plural = _("Stock Adjustment")
+    verbose_name = _("Stock adjustment")
+    verbose_name_plural = _("Stock adjustments")
 
 class ShareAdmin(admin.ModelAdmin):
-    list_display = ('partner_name', 'percentage', 'provision', 'created_at')
-    search_fields = ('partner_name',)
-    list_per_page = 10
-    verbose_name = _("Share")
-    verbose_name_plural = _("Shares")
+    list_display = ('partner_name', 'capital', 'show_percentage', 'show_provision', 'created_at')
+    fields = ('partner_name', 'capital')
 
-    def provision(self, obj):
-        profit_qs = SaleItem.objects.annotate(
-            profit_per_item=ExpressionWrapper(
-                (F('unit_price') - F('product__purchase_price')) * F('quantity'),
-                output_field=DecimalField()
-            )
-        ).aggregate(total_profit=Sum('profit_per_item'))
+    def get_form(self, request, obj=None, **kwargs):
+        form = super().get_form(request, obj, **kwargs)
+        form.base_fields['capital'].required = True
+        return form
 
-        total_profit = profit_qs['total_profit'] or 0
-        return round((obj.percentage / 100) * total_profit, 2)
+    def show_percentage(self, obj):
+        return f"{obj.calculate_percentage()}%"
 
-    provision.short_description = _('Provision (Estimate)')
+    show_percentage.short_description = _("Percentage")
+
+    def show_provision(self, obj):
+        return f"{obj.calculate_provision()}"
+
+    show_provision.short_description = _("Provision (Estimated)")
+    
+
+class TotalProfitAdmin(admin.ModelAdmin):
+    list_display = ('amount', 'updated_at')
 
 # Register models
+admin.site.register(TotalProfit, TotalProfitAdmin)
 admin.site.register(Supplier, SupplierAdmin)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Purchase, PurchaseAdmin)

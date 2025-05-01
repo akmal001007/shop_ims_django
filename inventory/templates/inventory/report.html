@@ -1,7 +1,8 @@
+{% load i18n %}
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Daily Report</title>
+    <title>{% trans "Daily Report" %}</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -9,10 +10,10 @@
             background-color: #f9f9f9;
         }
 
-        h1 {
+        h1, h2 {
             text-align: center;
             color: #333;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
         }
 
         .summary, .stock, .partners {
@@ -39,7 +40,7 @@
 
         .btn-dashboard {
             display: inline-block;
-            margin-top: 20px;
+            margin: 10px 0;
             padding: 10px 20px;
             background-color: #007BFF;
             color: white;
@@ -65,38 +66,52 @@
         .card strong {
             color: #333;
         }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
     </style>
 </head>
 <body>
 
-    <div style="margin-bottom: 20px; display: flex; flex-direction: column;">
-        <a href="{% url 'monthly_report' %}" class="btn-dashboard" style="width: 13%;">📅 Monthly Report</a>
-        <a href="/admin/" class="btn-dashboard" style="width: 13%;">← Back to Dashboard</a>
+    <div class="btn-group">
+        <a href="{% url 'monthly_report_list' %}" class="btn-dashboard">
+            📁 {% trans "Permanent Reports" %}
+        </a>
+        <a href="{% url 'monthly_report' %}" class="btn-dashboard">
+            📅 {% trans "Generate Monthly Report" %}
+        </a>
+        <a href="/admin/" class="btn-dashboard">
+            ← {% trans "Back to Dashboard" %}
+        </a>
     </div>
-    <h1>📊 Daily Report</h1>
+
+    <h1>📊 {% trans "Daily Report" %}</h1>
 
     <div class="summary card">
-        <p><strong>Total Purchases:</strong> {{ total_purchase_amount }}</p>
-        <p><strong>Total Sale Items:</strong> {{ total_sales_amount }}</p>
-        <p><strong>Total Profit:</strong> {{ profit }}</p>
+        <p><strong>{% trans "Total Purchases" %}:</strong> {{ total_purchase_amount }}</p>
+        <p><strong>{% trans "Total Sale Items" %}:</strong> {{ total_sales_amount }}</p>
+        <p><strong>{% trans "Total Profit" %}:</strong> {{ profit }}</p>
     </div>
 
     <div class="partners">
-        <h2>💼 Partner Profits</h2>
+        <h2>💼 {% trans "Partner Profits" %}</h2>
         <table>
             <thead>
                 <tr>
-                    <th>Partner</th>
-                    <th>Share %</th>
-                    <th>Profit</th>
+                    <th>{% trans "Partner" %}</th>
+                    <th>{% trans "Share %" %}</th>
+                    <th>{% trans "Profit" %}</th>
                 </tr>
             </thead>
             <tbody>
                 {% for share in partner_profits %}
                 <tr>
                     <td>{{ share.partner }}</td>
-                    <td>{{ share.percentage }}%</td>
-                    <td>${{ share.profit|floatformat:2 }}</td>
+                    <td>{{ share.percentage|floatformat:2 }}%</td>
+                    <td>{{ share.profit|floatformat:2 }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -104,14 +119,14 @@
     </div>
 
     <div class="stock">
-        <h2>📦 Remaining Stock</h2>
+        <h2>📦 {% trans "Remaining Stock" %}</h2>
         <table>
             <thead>
                 <tr>
-                    <th>Product</th>
-                    <th>Purchased</th>
-                    <th>Sold</th>
-                    <th>Remaining</th>
+                    <th>{% trans "Product" %}</th>
+                    <th>{% trans "Purchased" %}</th>
+                    <th>{% trans "Sold" %}</th>
+                    <th>{% trans "Remaining" %}</th>
                 </tr>
             </thead>
             <tbody>

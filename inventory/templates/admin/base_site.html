@@ -7,9 +7,14 @@
 
 {% block nav-global %}
   {{ block.super }}
-  
-  <li><a href="{% url 'daily_report' %}" target="_blank">📊 Daily Report</a></li>
 
+  <!-- Daily Report Link -->
+  <li><a href="{% url 'daily_report' %}" target="_blank">📊 {% trans "Daily Report" %}</a></li>
+
+  <!-- Monthly Reports Link -->
+  <li><a href="{% url 'monthly_report_list' %}" target="_blank">🗓️ {% trans "Permanent Reports" %}</a></li>
+
+  <!-- Language Switcher -->
   <li style="float: right; margin-right: 20px;">
     <form action="{% url 'set_language' %}" method="post" style="display: inline;">{% csrf_token %}
       <select name="language" onchange="this.form.submit()" style="padding: 3px; font-size: 13px; border: none;">

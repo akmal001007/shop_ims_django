@@ -45,11 +45,11 @@
             <th>Profit</th>
         </tr>
         <tr>
-            <td>${{ total_purchases|floatformat:2 }}</td>
+            <td>{{ total_purchases|floatformat:2 }}</td>
             <!-- <td>${{ total_sales_price|floatformat:2 }}</td> -->
             <td>{{ total_sales_count }}</td>
             <td>{{ remaining_stock }}</td>
-            <td>${{ profit|floatformat:2 }}</td>
+            <td>{{ profit|floatformat:2 }}</td>
         </tr>
     </table>
 
@@ -63,8 +63,8 @@
         {% for share in share_profits %}
         <tr>
             <td>{{ share.partner_name }}</td>
-            <td>{{ share.percentage }}%</td>
-            <td>${{ share.profit }}</td>
+            <td>{{ share.percentage|floatformat:2 }}%</td>
+            <td>{{ share.profit }}</td>
         </tr>
         {% endfor %}
     </table>

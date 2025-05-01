@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block main_content %}
+  <h1>{% trans "Permanent Reports" %}</h1>
+
+  <!-- Daily Report Section -->
+  <div style="background:#f9f9f9; padding: 20px; margin-bottom: 20px; border: 1px solid #ccc;">
+    <h2>📅 Daily Report ({{ today }})</h2>
+    <p><strong>Total Sales:</strong> {{ total_sales }}</p>
+    <p><strong>Total Purchases:</strong> {{ total_purchases }}</p>
+
+    <!-- <h3>Remaining Stock</h3>
+    <ul>
+      {% for product in products %}
+        <li>{{ product.name }}: {{ product.quantity }}</li>
+      {% endfor %}
+    </ul> -->
+  </div>
+
+  <!-- Purchase Details Section -->
+  <h3>Purchase Details</h3>
+  <table border="1">
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Boxes</th>
+        <th>Packages</th>
+        <th>Items</th>
+        <th>Cost per Box</th>
+        <th>Total Cost</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for purchase in purchase_details %}
+        <tr>
+          <td>{{ purchase.product.product_name }}</td>
+          <td>{{ purchase.box_quantity }}</td>
+          <td>{{ purchase.total_packages }}</td>
+          <td>{{ purchase.total_items }}</td>
+          <td>{{ purchase.cost_per_box }}</td>
+          <td>{{ purchase.total_cost_value }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <!-- Permanent Report List -->
+  {% if reports %}
+    <ul>
+      {% for report in reports %}
+        <li>{{ report.title }} - {{ report.created_at }}</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No permanent reports found.</p>
+  {% endif %}
+
+  <!-- Download PDF Button -->
+  <a href="{% url 'download_permanent_report_pdf' %}" class="btn btn-primary">{% trans "Download PDF" %}</a>
+{% endblock %}
