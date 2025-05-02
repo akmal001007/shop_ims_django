@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-==a4s54y(qrd#k#f!xv$@=*ra&o#f1!39_^9-#)&ql7&neiu(p
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-ALLOWED_HOSTS = ['shop-ims-django.onrender.com']
+ALLOWED_HOSTS = ['localhost','127.0.0.1','shop-ims-django.onrender.com']
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
